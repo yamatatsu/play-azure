@@ -32,8 +32,4 @@ RUN uv python install 3.12
 # Azure CLIのインストール
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
-# pulumiのインストール
-RUN curl -fsSL https://get.pulumi.com | sh
-ENV PATH="/home/vscode/.pulumi/bin:$PATH"
-
 WORKDIR /workspace/main

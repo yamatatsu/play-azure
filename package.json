@@ -1,5 +1,5 @@
 {
-	"name": "play-azure-pulumi",
+	"name": "play-azure",
 	"type": "module",
 	"private": true,
 	"workspaces": [
