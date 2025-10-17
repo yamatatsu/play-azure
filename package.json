@@ -1,8 +1,11 @@
 {
-  "name": "main",
-  "module": "index.ts",
+  "name": "play-azure-pulumi",
   "type": "module",
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "devDependencies": {
     "@types/bun": "latest"
   },
