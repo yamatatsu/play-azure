@@ -13,9 +13,16 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
+				// Docker, Dev Containers
 				"anysphere.remote-containers",
-				"biomejs.biome",
+				"docker.docker",
+				"ms-azuretools.vscode-docker",
+				// GitHub
 				"github.vscode-github-actions",
+				// Bicep
+				"ms-azuretools.vscode-bicep",
+				// TS tools
+				"biomejs.biome",
 				"Prisma.prisma"
 			],
 			"settings": {
