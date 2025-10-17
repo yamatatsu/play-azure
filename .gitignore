@@ -1,0 +1,3 @@
+.env
+.devcontainer/setup.personal.sh
+node_modules

@@ -1,0 +1,38 @@
+services:
+  dev:
+    build:
+      context: ../
+      dockerfile: .devcontainer/Dockerfile
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      DB_HOST: db
+      DB_DBNAME: mydb
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+    volumes:
+      - ..:/workspace/main:cached
+    command: sleep infinity
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d mydb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  db-data:
