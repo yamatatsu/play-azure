@@ -32,6 +32,7 @@ resource containerAppsSubnet 'Microsoft.Network/virtualNetworks/subnets@2023-05-
   name: 'containerapps-subnet'
   properties: {
     addressPrefix: containerAppsSubnetPrefix
+    privateEndpointNetworkPolicies: 'Enabled'
     delegations: [
       {
         name: 'Microsoft.App.environments'
@@ -48,6 +49,7 @@ resource postgresSubnet 'Microsoft.Network/virtualNetworks/subnets@2023-05-01' =
   name: 'postgres-subnet'
   properties: {
     addressPrefix: postgresSubnetPrefix
+    privateEndpointNetworkPolicies: 'Enabled'
     delegations: [
       {
         name: 'Microsoft.DBforPostgreSQL.flexibleServers'
