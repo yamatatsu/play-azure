@@ -7,12 +7,21 @@ param location string = resourceGroup().location
 @allowed(['dev', 'staging', 'prod'])
 param environment string
 
-var prefix = 'myapp-${environment}'
+var appName = 'myapp'
+var prefix = '${appName}-${environment}'
 
+@description('Tags for all resources')
+var tags = {
+  environment: environment
+  project: appName
+  managedBy: 'bicep'
+}
 
 module network 'modules/network.bicep' = {
-  name: '${prefix}-network'
+  name: '${prefix}-network-deployment'
   params: {
     location: location
+    prefix: prefix
+    tags: tags
   }
 }

@@ -1,5 +1,11 @@
+@description('Resource name prefix (appName-environment)')
+param prefix string
+
 @description('Location for all resources')
 param location string
+
+@description('Tags for resources')
+param tags object = {}
 
 @description('VNet address prefix')
 param vnetAddressPrefix string = '10.0.0.0/16'
@@ -11,8 +17,9 @@ param containerAppsSubnetPrefix string = '10.0.0.0/23'
 param postgresSubnetPrefix string = '10.0.2.0/24'
 
 resource vnet 'Microsoft.Network/virtualNetworks@2023-05-01' = {
-  name: 'app-vnet'
+  name: '${prefix}-vnet'
   location: location
+  tags: tags
   properties: {
     addressSpace: {
       addressPrefixes: [vnetAddressPrefix]

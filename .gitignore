@@ -1,3 +1,4 @@
 .env
 .devcontainer/setup.personal.sh
 node_modules
+.claude/settings.local.json
