@@ -67,15 +67,15 @@ az deployment group create \
 ## Phase 4: 監視基盤 🔵
 
 ### 4-1. Log AnalyticsとApplication Insights
-- [ ] Log Analytics Workspace作成
-- [ ] Application Insights作成
-- [ ] Log Analyticsとの連携設定
-- [ ] デプロイ・検証
+- [x] Log Analytics Workspace作成
+- [x] Application Insights作成
+- [x] Log Analyticsとの連携設定
+- [x] デプロイ・検証
 
 **検証項目:**
-- [ ] Log Analytics Workspaceが作成されている
-- [ ] Application Insightsが作成されている
-- [ ] 正しく連携されている
+- [x] Log Analytics Workspaceが作成されている
+- [x] Application Insightsが作成されている
+- [x] 正しく連携されている
 
 ---
 

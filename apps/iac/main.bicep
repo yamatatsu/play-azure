@@ -36,6 +36,15 @@ module natGateway 'modules/nat-gateway.bicep' = {
   }
 }
 
+module monitoring 'modules/monitoring.bicep' = {
+  name: '${prefix}-monitoring-deployment'
+  params: {
+    location: location
+    prefix: prefix
+    tags: tags
+  }
+}
+
 module network 'modules/network.bicep' = {
   name: '${prefix}-network-deployment'
   params: {
