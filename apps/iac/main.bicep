@@ -7,6 +7,10 @@ param location string = resourceGroup().location
 @allowed(['dev', 'staging', 'prod'])
 param environment string
 
+@description('PostgreSQL administrator password')
+@secure()
+param postgresAdminPassword string
+
 var appName = 'myapp'
 var prefix = '${appName}-${environment}'
 
@@ -54,5 +58,17 @@ module network 'modules/network.bicep' = {
     containerAppsNsgId: nsg.outputs.containerAppsNsgId
     postgresNsgId: nsg.outputs.postgresNsgId
     natGatewayId: natGateway.outputs.natGatewayId
+  }
+}
+
+module postgresql 'modules/postgresql.bicep' = {
+  name: '${prefix}-postgresql-deployment'
+  params: {
+    location: location
+    prefix: prefix
+    tags: tags
+    environment: environment
+    postgresSubnetId: network.outputs.postgresSubnetId
+    administratorPassword: postgresAdminPassword
   }
 }
