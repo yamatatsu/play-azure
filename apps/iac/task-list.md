@@ -52,15 +52,15 @@ az deployment group create \
 ## Phase 3: NAT Gateway 🔵
 
 ### 3-1. NAT GatewayとパブリックIP
-- [ ] パブリックIP作成 (Standard SKU)
-- [ ] NAT Gateway作成
-- [ ] NAT GatewayをContainer Apps Subnetに関連付け
-- [ ] デプロイ・検証
+- [x] パブリックIP作成 (Standard SKU)
+- [x] NAT Gateway作成
+- [x] NAT GatewayをContainer Apps Subnetに関連付け
+- [x] デプロイ・検証
 
 **検証項目:**
-- [ ] パブリックIPが作成されている
-- [ ] NAT Gatewayが作成されている
-- [ ] NAT GatewayがSubnetに関連付けられている
+- [x] パブリックIPが作成されている
+- [x] NAT Gatewayが作成されている
+- [x] NAT GatewayがSubnetに関連付けられている
 
 ---
 

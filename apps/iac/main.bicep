@@ -27,6 +27,15 @@ module nsg 'modules/nsg.bicep' = {
   }
 }
 
+module natGateway 'modules/nat-gateway.bicep' = {
+  name: '${prefix}-nat-gateway-deployment'
+  params: {
+    location: location
+    prefix: prefix
+    tags: tags
+  }
+}
+
 module network 'modules/network.bicep' = {
   name: '${prefix}-network-deployment'
   params: {
@@ -35,5 +44,6 @@ module network 'modules/network.bicep' = {
     tags: tags
     containerAppsNsgId: nsg.outputs.containerAppsNsgId
     postgresNsgId: nsg.outputs.postgresNsgId
+    natGatewayId: natGateway.outputs.natGatewayId
   }
 }

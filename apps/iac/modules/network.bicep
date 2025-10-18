@@ -13,6 +13,9 @@ param containerAppsNsgId string
 @description('PostgreSQL NSG resource ID')
 param postgresNsgId string
 
+@description('NAT Gateway resource ID')
+param natGatewayId string
+
 @description('VNet address prefix')
 param vnetAddressPrefix string = '10.0.0.0/16'
 
@@ -41,6 +44,9 @@ resource containerAppsSubnet 'Microsoft.Network/virtualNetworks/subnets@2023-05-
     privateEndpointNetworkPolicies: 'Enabled'
     networkSecurityGroup: {
       id: containerAppsNsgId
+    }
+    natGateway: {
+      id: natGatewayId
     }
     delegations: [
       {
