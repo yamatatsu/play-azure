@@ -29,7 +29,8 @@ ENV PATH="/home/vscode/.local/bin:$PATH"
 # uvを使ってPython 3.12をインストール（Serena互換性のため）
 RUN uv python install 3.12
 
-# Azure CLIのインストール
+# Azure CLI と bicep のインストール
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+RUN az bicep install
 
 WORKDIR /workspace/main

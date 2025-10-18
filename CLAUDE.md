@@ -104,3 +104,7 @@ bun --hot ./index.ts
 ```
 
 For more information, read the Bun API docs in `node_modules/bun-types/docs/**.md`.
+
+## IaC (Infrastructure as Code)
+
+Azure Container Apps環境のインフラ構成については [`apps/iac/README.md`](apps/iac/README.md) を参照してください。
