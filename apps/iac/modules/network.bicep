@@ -7,6 +7,12 @@ param location string
 @description('Tags for resources')
 param tags object = {}
 
+@description('Container Apps NSG resource ID')
+param containerAppsNsgId string
+
+@description('PostgreSQL NSG resource ID')
+param postgresNsgId string
+
 @description('VNet address prefix')
 param vnetAddressPrefix string = '10.0.0.0/16'
 
@@ -33,6 +39,9 @@ resource containerAppsSubnet 'Microsoft.Network/virtualNetworks/subnets@2023-05-
   properties: {
     addressPrefix: containerAppsSubnetPrefix
     privateEndpointNetworkPolicies: 'Enabled'
+    networkSecurityGroup: {
+      id: containerAppsNsgId
+    }
     delegations: [
       {
         name: 'Microsoft.App.environments'
@@ -50,6 +59,9 @@ resource postgresSubnet 'Microsoft.Network/virtualNetworks/subnets@2023-05-01' =
   properties: {
     addressPrefix: postgresSubnetPrefix
     privateEndpointNetworkPolicies: 'Enabled'
+    networkSecurityGroup: {
+      id: postgresNsgId
+    }
     delegations: [
       {
         name: 'Microsoft.DBforPostgreSQL.flexibleServers'

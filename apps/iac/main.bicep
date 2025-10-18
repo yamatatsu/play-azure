@@ -17,11 +17,23 @@ var tags = {
   managedBy: 'bicep'
 }
 
+module nsg 'modules/nsg.bicep' = {
+  name: '${prefix}-nsg-deployment'
+  params: {
+    location: location
+    prefix: prefix
+    tags: tags
+    containerAppsSubnetPrefix: '10.0.0.0/23'
+  }
+}
+
 module network 'modules/network.bicep' = {
   name: '${prefix}-network-deployment'
   params: {
     location: location
     prefix: prefix
     tags: tags
+    containerAppsNsgId: nsg.outputs.containerAppsNsgId
+    postgresNsgId: nsg.outputs.postgresNsgId
   }
 }

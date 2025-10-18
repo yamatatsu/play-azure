@@ -33,19 +33,19 @@ az deployment group create \
 ## Phase 2: NSG (Network Security Group) 🔵
 
 ### 2-1. NSGの作成と適用
-- [ ] Container Apps用NSG作成
+- [x] Container Apps用NSG作成
   - Inbound: HTTPS (443), HTTP (80), Azure LB
   - Outbound: Allow All
-- [ ] PostgreSQL用NSG作成
+- [x] PostgreSQL用NSG作成
   - Inbound: PostgreSQL (5432) from Container Apps Subnet
   - Outbound: Allow All
-- [ ] NSGをサブネットに関連付け
-- [ ] デプロイ・検証
+- [x] NSGをサブネットに関連付け
+- [x] デプロイ・検証
 
 **検証項目:**
-- [ ] NSGが作成されている
-- [ ] NSGルールが正しく設定されている
-- [ ] NSGがサブネットに関連付けられている
+- [x] NSGが作成されている
+- [x] NSGルールが正しく設定されている
+- [x] NSGがサブネットに関連付けられている
 
 ---
 
