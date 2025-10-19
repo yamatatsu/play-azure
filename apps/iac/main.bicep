@@ -7,7 +7,7 @@ param location string = resourceGroup().location
 @allowed(['dev', 'staging', 'prod'])
 param environment string
 
-var appName = 'myapp'
+var appName = 'yamatatsu-lab-v1'
 var prefix = '${appName}-${environment}'
 
 var containerAppsSubnetPrefix = '10.0.0.0/23'
@@ -21,11 +21,16 @@ var tags = {
 
 // 既存のKey Vaultへの参照
 // このKey Vaultには、アプリケーションで使用するシークレットが格納されている想定
-//
 // bicepをデプロイする前に環境ごとに手動で作成しておく必要がある
+// 
+// まずは KeyVault がリソースプロバイダーに登録されていることを確認する
+//   az provider show --namespace Microsoft.KeyVault --query "registrationState"
+// 登録されていない場合は以下で登録
+//   az provider register --namespace Microsoft.KeyVault
+// 
 // 開発環境の例:
 //   az keyvault create \
-//     --name myapp-dev-kv \
+//     --name yamatatsu-lab-v1-dev-kv \
 //     --resource-group yamatatsu-lab \
 //     --location japaneast \
 //     --enable-rbac-authorization false \
@@ -33,7 +38,7 @@ var tags = {
 //
 // 加えて、PostgreSQLのadmin passwordも格納しておくこと
 //   az keyvault secret set \
-//     --vault-name myapp-dev-kv \
+//     --vault-name yamatatsu-lab-v1-dev-kv \
 //     --name "postgres-admin-password" \
 //     --value "<your-postgres-admin-password>"
 resource keyVault 'Microsoft.KeyVault/vaults@2025-05-01' existing = {

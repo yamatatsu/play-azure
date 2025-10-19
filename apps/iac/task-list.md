@@ -18,7 +18,7 @@ Azure Container Apps環境をBicepで段階的に実装します。各フェー�
 **デプロイコマンド例:**
 ```bash
 az deployment group create \
-  --resource-group myapp-dev-rg \
+  --resource-group yamatatsu-lab-v1-lab-ver1-dev-rg \
   --template-file main.bicep \
   --parameters params/dev.bicepparam
 ```
@@ -82,19 +82,19 @@ az deployment group create \
 ## Phase 5: PostgreSQL Flexible Server 🔵
 
 ### 5-1. PostgreSQL作成
-- [ ] PostgreSQL Flexible Server作成
+- [x] PostgreSQL Flexible Server作成
   - VNet統合
   - Private DNS Zone設定
   - Zone-Redundant HA (本番のみ)
   - Burstable tier (開発), General Purpose (本番)
-- [ ] PostgreSQL管理者パスワードの設定（Key Vault統合）
-- [ ] データベース作成
-- [ ] デプロイ・検証
+- [x] PostgreSQL管理者パスワードの設定（Key Vault統合）
+- [x] データベース作成
+- [x] デプロイ・検証
 
 **検証項目:**
-- [ ] PostgreSQLが作成されている
-- [ ] VNet統合されている
-- [ ] Private DNS Zoneが設定されている
+- [X] PostgreSQLが作成されている
+- [x] VNet統合されている
+- [x] Private DNS Zoneが設定されている
 - [ ] 接続テスト成功
 
 **接続テストコマンド例:**
@@ -144,8 +144,8 @@ psql "postgresql://{username}:{password}@{server-name}.postgres.database.azure.c
 ```bash
 # Container App URLの取得
 az containerapp show \
-  --name myapp-web \
-  --resource-group myapp-dev-rg \
+  --name yamatatsu-lab-v1-lab-ver1-web \
+  --resource-group yamatatsu-lab-v1-lab-ver1-dev-rg \
   --query properties.configuration.ingress.fqdn
 
 # HTTPSアクセステスト

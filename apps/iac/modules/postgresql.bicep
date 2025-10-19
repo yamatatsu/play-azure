@@ -42,6 +42,36 @@ param administratorPassword string
 // - 自動バックアップ: 7日間保持
 // - ポイントインタイムリストア対応
 // - Geo-Redundantバックアップ: 本番環境で検討
+//
+//
+// [APPENDIX] なぜこの構成が必要か？
+//
+// 1. Private DNS Zoneの役割:
+//    PostgreSQL Flexible ServerはVNet統合時にプライベートIPアドレスを取得します。
+//    接続にはFQDN（例: yamatatsu-lab-v1-dev-postgres.postgres.database.azure.com）を使用しますが、
+//    このFQDNをプライベートIPに解決するためにPrivate DNS Zoneが必要です。
+//
+// 2. VNet Linkの役割:
+//    Private DNS Zoneは独立したリソースなので、どのVNetから参照できるかを明示的に
+//    設定する必要があります。VNet Linkを作成することで、VNet内のリソース
+//    （Container Appsなど）がPrivate DNS Zoneを使った名前解決を行えます。
+//
+// 3. データフロー:
+//    Container Apps
+//      → 接続要求: yamatatsu-lab-v1-dev-postgres.postgres.database.azure.com
+//      → VNet（Private DNS Zone経由で名前解決）
+//      → プライベートIP: 10.0.2.x
+//      → PostgreSQL Flexible Server
+//
+// Public Access方式について:
+// PostgreSQL Flexible Serverには「Public Access（パブリックアクセス）」方式もあります。
+// この方式ではパブリックIPアドレスを持ち、ファイアウォールルールでアクセス制限を行います。
+// Private DNS Zoneは不要でシンプルですが、以下の理由で推奨しません:
+//
+// - セキュリティ: インターネット経由のアクセスとなりリスクが高い
+// - レイテンシ: VNet内通信と比較してレイテンシが高い
+// - コスト: VNet内通信は無料だが、インターネット経由はデータ転送コストがかかる
+// - Container Appsとの相性: 両方ともVNet内に配置する構成では、プライベート通信が最適
 // ============================================================================
 
 var administratorLogin = 'pgadmin'

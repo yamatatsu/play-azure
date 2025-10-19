@@ -537,7 +537,7 @@ PostgreSQL: スタンバイへフェイルオーバー
 ```
 環境:
 ├─ Development (dev)
-│  - リソースグループ: myapp-dev-rg
+│  - リソースグループ: yamatatsu-lab-v1-dev-rg
 │  - 最小構成（コスト最適化）
 │  - PostgreSQL: Burstable tier
 │  - Container Apps: Min 0, Max 3
@@ -610,7 +610,7 @@ jobs:
         uses: azure/arm-deploy@v1
         with:
           scope: resourcegroup
-          resourceGroupName: myapp-${{ github.event.inputs.environment }}-rg
+          resourceGroupName: yamatatsu-lab-v1-${{ github.event.inputs.environment }}-rg
           template: ./infrastructure/main.bicep
           parameters: ./infrastructure/params/${{ github.event.inputs.environment }}.bicepparam
 ```
@@ -641,8 +641,8 @@ jobs:
       - name: Update Container App
         run: |
           az containerapp update \
-            --name myapp-web \
-            --resource-group myapp-prod-rg \
+            --name yamatatsu-lab-v1-web \
+            --resource-group yamatatsu-lab-v1-prod-rg \
             --image myregistry.azurecr.io/app:${{ github.sha }}
 ```
 
@@ -668,13 +668,13 @@ Container Appsのリビジョン機能を使用:
 ```bash
 # 前のリビジョンに即座に切り替え
 az containerapp revision set-mode \
-  --name myapp-web \
-  --resource-group myapp-prod-rg \
+  --name yamatatsu-lab-v1-web \
+  --resource-group yamatatsu-lab-v1-prod-rg \
   --mode single
 
 az containerapp revision activate \
-  --name myapp--rev-previous \
-  --resource-group myapp-prod-rg
+  --name yamatatsu-lab-v1--rev-previous \
+  --resource-group yamatatsu-lab-v1-prod-rg
 ```
 
 ## 9. 運用・監視
@@ -865,18 +865,18 @@ Application Gateway WAF_v2:
 ```bash
 # 開発環境
 az deployment group create \
-  --resource-group myapp-dev-rg \
+  --resource-group yamatatsu-lab-v1-dev-rg \
   --template-file infrastructure/main.bicep \
   --parameters infrastructure/params/dev.bicepparam
 
 # 本番環境（What-If確認後）
 az deployment group what-if \
-  --resource-group myapp-prod-rg \
+  --resource-group yamatatsu-lab-v1-prod-rg \
   --template-file infrastructure/main.bicep \
   --parameters infrastructure/params/prod.bicepparam
 
 az deployment group create \
-  --resource-group myapp-prod-rg \
+  --resource-group yamatatsu-lab-v1-prod-rg \
   --template-file infrastructure/main.bicep \
   --parameters infrastructure/params/prod.bicepparam
 ```
@@ -885,8 +885,8 @@ az deployment group create \
 ```bash
 # Container Appsログ
 az containerapp logs show \
-  --name myapp-web \
-  --resource-group myapp-prod-rg \
+  --name yamatatsu-lab-v1-web \
+  --resource-group yamatatsu-lab-v1-prod-rg \
   --follow
 
 # PostgreSQLログ（Log Analytics経由）
