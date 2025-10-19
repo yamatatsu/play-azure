@@ -48,7 +48,7 @@ param containerAppsSubnetPrefix string
 // 2. インフラヘルスチェック (AzureLoadBalancer on 30000-32767)
 // ============================================================================
 resource containerAppsNsg 'Microsoft.Network/networkSecurityGroups@2024-10-01' = {
-  name: '${prefix}-containerapps-nsg'
+  name: '${prefix}-nsg-containerapps'
   location: location
   tags: tags
   properties: {
@@ -125,7 +125,7 @@ resource containerAppsNsg 'Microsoft.Network/networkSecurityGroups@2024-10-01' =
 // ❌ その他のサブネット → PostgreSQL: 拒否（デフォルトルール65500経由）
 // ============================================================================
 resource postgresNsg 'Microsoft.Network/networkSecurityGroups@2024-10-01' = {
-  name: '${prefix}-postgres-nsg'
+  name: '${prefix}-nsg-postgres'
   location: location
   tags: tags
   properties: {
