@@ -79,14 +79,14 @@ var storageConfig = {
 }
 
 // Private DNS Zone
-resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
+resource privateDnsZone 'Microsoft.Network/privateDnsZones@2024-06-01' = {
   name: '${prefix}.postgres.database.azure.com'
   location: 'global'
   tags: tags
 }
 
 // Virtual Network Link for Private DNS Zone
-resource privateDnsZoneVnetLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
+resource privateDnsZoneVnetLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2024-06-01' = {
   parent: privateDnsZone
   name: '${prefix}-vnet-link'
   location: 'global'
@@ -100,7 +100,7 @@ resource privateDnsZoneVnetLink 'Microsoft.Network/privateDnsZones/virtualNetwor
 }
 
 // PostgreSQL Flexible Server
-resource postgresServer 'Microsoft.DBforPostgreSQL/flexibleServers@2023-03-01-preview' = {
+resource postgresServer 'Microsoft.DBforPostgreSQL/flexibleServers@2024-08-01' = {
   name: '${prefix}-postgres'
   location: location
   tags: tags
@@ -134,7 +134,7 @@ resource postgresServer 'Microsoft.DBforPostgreSQL/flexibleServers@2023-03-01-pr
 }
 
 // Database
-resource database 'Microsoft.DBforPostgreSQL/flexibleServers/databases@2023-03-01-preview' = {
+resource database 'Microsoft.DBforPostgreSQL/flexibleServers/databases@2024-08-01' = {
   parent: postgresServer
   name: databaseName
   properties: {
@@ -146,7 +146,7 @@ resource database 'Microsoft.DBforPostgreSQL/flexibleServers/databases@2023-03-0
 // PostgreSQL Configuration - クエリログ設定（明示的に無効化）
 // 開発環境では詳細なクエリログを有効化することも可能
 // log_statement: 'none' (無効), 'ddl', 'mod', 'all'
-resource postgresConfig 'Microsoft.DBforPostgreSQL/flexibleServers/configurations@2023-03-01-preview' = {
+resource postgresConfig 'Microsoft.DBforPostgreSQL/flexibleServers/configurations@2024-08-01' = {
   parent: postgresServer
   name: 'log_statement'
   properties: {

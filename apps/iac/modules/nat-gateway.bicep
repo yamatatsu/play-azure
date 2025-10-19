@@ -28,7 +28,7 @@ param tags object = {}
 // ============================================================================
 
 // Public IP for NAT Gateway
-resource natPublicIp 'Microsoft.Network/publicIPAddresses@2023-05-01' = {
+resource natPublicIp 'Microsoft.Network/publicIPAddresses@2024-10-01' = {
   name: '${prefix}-nat-pip'
   location: location
   tags: tags
@@ -47,7 +47,7 @@ resource natPublicIp 'Microsoft.Network/publicIPAddresses@2023-05-01' = {
 }
 
 // NAT Gateway
-resource natGateway 'Microsoft.Network/natGateways@2023-05-01' = {
+resource natGateway 'Microsoft.Network/natGateways@2024-10-01' = {
   name: '${prefix}-nat-gateway'
   location: location
   tags: tags

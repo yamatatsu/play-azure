@@ -23,7 +23,7 @@ param tags object = {}
 // - コスト考慮: 開発環境は短め、本番環境は長めに設定
 // ============================================================================
 
-resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
+resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2025-02-01' = {
   name: '${prefix}-logs'
   location: location
   tags: tags

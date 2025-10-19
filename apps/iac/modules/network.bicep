@@ -25,7 +25,7 @@ param containerAppsSubnetPrefix string = '10.0.0.0/23'
 @description('PostgreSQL subnet prefix')
 param postgresSubnetPrefix string = '10.0.2.0/24'
 
-resource vnet 'Microsoft.Network/virtualNetworks@2023-05-01' = {
+resource vnet 'Microsoft.Network/virtualNetworks@2024-10-01' = {
   name: '${prefix}-vnet'
   location: location
   tags: tags
@@ -36,7 +36,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-05-01' = {
   }
 }
 
-resource containerAppsSubnet 'Microsoft.Network/virtualNetworks/subnets@2023-05-01' = {
+resource containerAppsSubnet 'Microsoft.Network/virtualNetworks/subnets@2024-10-01' = {
   parent: vnet
   name: 'containerapps-subnet'
   properties: {
@@ -59,7 +59,7 @@ resource containerAppsSubnet 'Microsoft.Network/virtualNetworks/subnets@2023-05-
   }
 }
 
-resource postgresSubnet 'Microsoft.Network/virtualNetworks/subnets@2023-05-01' = {
+resource postgresSubnet 'Microsoft.Network/virtualNetworks/subnets@2024-10-01' = {
   parent: vnet
   name: 'postgres-subnet'
   properties: {
