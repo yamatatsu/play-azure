@@ -14,18 +14,9 @@ param environment string
 @description('PostgreSQL subnet resource ID')
 param postgresSubnetId string
 
-@description('PostgreSQL administrator login name')
-param administratorLogin string = 'pgadmin'
-
 @description('PostgreSQL administrator password')
 @secure()
 param administratorPassword string
-
-@description('PostgreSQL version')
-param postgresVersion string = '15'
-
-@description('Database name to create')
-param databaseName string = 'appdb'
 
 // ============================================================================
 // PostgreSQL Flexible Server
@@ -52,6 +43,9 @@ param databaseName string = 'appdb'
 // - ポイントインタイムリストア対応
 // - Geo-Redundantバックアップ: 本番環境で検討
 // ============================================================================
+
+var administratorLogin = 'pgadmin'
+var databaseName = 'appdb'
 
 // SKU設定（環境ごと）
 var skuConfig = {
@@ -104,12 +98,9 @@ resource postgresServer 'Microsoft.DBforPostgreSQL/flexibleServers@2024-08-01' =
   name: '${prefix}-postgres'
   location: location
   tags: tags
-  sku: {
-    name: skuConfig[environment].name
-    tier: skuConfig[environment].tier
-  }
+  sku: skuConfig[environment]
   properties: {
-    version: postgresVersion
+    version: '15'
     administratorLogin: administratorLogin
     administratorLoginPassword: administratorPassword
     storage: {

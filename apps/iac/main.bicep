@@ -7,10 +7,6 @@ param location string = resourceGroup().location
 @allowed(['dev', 'staging', 'prod'])
 param environment string
 
-@description('PostgreSQL administrator password')
-@secure()
-param postgresAdminPassword string
-
 var appName = 'myapp'
 var prefix = '${appName}-${environment}'
 
@@ -22,6 +18,32 @@ var tags = {
   project: appName
   managedBy: 'bicep'
 }
+
+// 既存のKey Vaultへの参照
+// このKey Vaultには、アプリケーションで使用するシークレットが格納されている想定
+//
+// bicepをデプロイする前に環境ごとに手動で作成しておく必要がある
+// 開発環境の例:
+//   az keyvault create \
+//     --name myapp-dev-kv \
+//     --resource-group yamatatsu-lab \
+//     --location japaneast \
+//     --enable-rbac-authorization false \
+//     --enabled-for-template-deployment true
+//
+// 加えて、PostgreSQLのadmin passwordも格納しておくこと
+//   az keyvault secret set \
+//     --vault-name myapp-dev-kv \
+//     --name "postgres-admin-password" \
+//     --value "<your-postgres-admin-password>"
+resource keyVault 'Microsoft.KeyVault/vaults@2025-05-01' existing = {
+  name: '${prefix}-kv'
+  scope: resourceGroup()
+}
+
+
+// ===========================================================================
+// Modules
 
 module nsg 'modules/nsg.bicep' = {
   name: '${prefix}-nsg-deployment'
@@ -72,6 +94,6 @@ module postgresql 'modules/postgresql.bicep' = {
     tags: tags
     environment: environment
     postgresSubnetId: network.outputs.postgresSubnetId
-    administratorPassword: postgresAdminPassword
+    administratorPassword: keyVault.getSecret('postgres-admin-password')
   }
 }
