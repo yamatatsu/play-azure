@@ -14,6 +14,8 @@ param postgresAdminPassword string
 var appName = 'myapp'
 var prefix = '${appName}-${environment}'
 
+var containerAppsSubnetPrefix = '10.0.0.0/23'
+
 @description('Tags for all resources')
 var tags = {
   environment: environment
@@ -27,7 +29,7 @@ module nsg 'modules/nsg.bicep' = {
     location: location
     prefix: prefix
     tags: tags
-    containerAppsSubnetPrefix: '10.0.0.0/23'
+    containerAppsSubnetPrefix: containerAppsSubnetPrefix
   }
 }
 
@@ -55,6 +57,7 @@ module network 'modules/network.bicep' = {
     location: location
     prefix: prefix
     tags: tags
+    containerAppsSubnetPrefix: containerAppsSubnetPrefix
     containerAppsNsgId: nsg.outputs.containerAppsNsgId
     postgresNsgId: nsg.outputs.postgresNsgId
     natGatewayId: natGateway.outputs.natGatewayId
