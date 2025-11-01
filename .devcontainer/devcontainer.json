@@ -18,7 +18,9 @@
 				"docker.docker",
 				"ms-azuretools.vscode-docker",
 				// GitHub
+				"eamodio.gitlens",
 				"github.vscode-github-actions",
+				"ziyasal.vscode-open-in-github",
 				// Bicep
 				"ms-azuretools.vscode-bicep",
 				// TS tools
