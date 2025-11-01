@@ -7,7 +7,9 @@
 		"packages/*"
 	],
 	"scripts": {
-		"check": "biome check",
+		"check": "bun check:biome && bun check:type",
+		"check:biome": "biome check",
+		"check:type": "bun run --workspaces check:type",
 		"prepare": "husky"
 	},
 	"devDependencies": {

@@ -10,6 +10,7 @@
 			"**",
 			"!**/src/generated",
 			"!**/prisma/migrations",
+			"!.mcp.json",
 			"!apps/frontend/src/index.css",
 			"!apps/frontend/src/app/routeTree.gen.ts"
 		],
@@ -21,6 +22,9 @@
 			"recommended": true,
 			"nursery": {
 				"noFloatingPromises": "error"
+			},
+			"suspicious": {
+				"noConsole": "error"
 			}
 		}
 	},
