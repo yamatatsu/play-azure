@@ -261,7 +261,6 @@ postgresql://{username}:{password}@{server-name}.postgres.database.azure.com:543
 - Bicep: エディタ内で完結、リアルタイムエラー検出
 
 **選択しなかった理由:**
-- **Pulumi**: サンプルコードの豊富さ。それによるAI支援。
 - **Terraform**: マルチクラウド不要。DXがBicepに劣る
 - **ARM Template (JSON)**: 冗長で可読性が低い。Bicepが上位互換
 
