@@ -1,0 +1,33 @@
+{
+	"name": "@apps/backend",
+	"version": "0.0.0",
+	"private": true,
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"types": "./src/index.ts",
+	"scripts": {
+		"dev": "bun run --watch --env-file-if-exists=.env src/index.ts | pino-pretty",
+
+		"test": "vitest watch",
+		"test:run": "vitest run",
+		"clean": "rimraf dist",
+		"check:type": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@hono/node-server": "1.19.4",
+		"@hono/zod-validator": "0.7.3",
+		"@packages/db": "workspace:*",
+		"@packages/logger": "workspace:*",
+		"hono": "4.9.8",
+		"neverthrow": "^8.2.0",
+		"zod": "4.1.11"
+	},
+	"devDependencies": {
+		"@chax-at/transactional-prisma-testing": "1.4.0",
+		"pino-pretty": "13.1.1",
+		"rimraf": "6.0.1",
+		"typescript": "5.9.2",
+		"vitest": "3.2.4"
+	}
+}
