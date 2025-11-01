@@ -60,7 +60,7 @@ module nsg 'modules/nsg.bicep' = {
   }
 }
 
-module natGateway 'modules/nat-gateway.bicep' = {
+module natGateway 'modules/nat-gateway.bicep' = if (environment != 'dev') {
   name: '${prefix}-nat-gateway-deployment'
   params: {
     location: location
@@ -69,7 +69,7 @@ module natGateway 'modules/nat-gateway.bicep' = {
   }
 }
 
-module monitoring 'modules/monitoring.bicep' = {
+module monitoring 'modules/monitoring.bicep' = if (environment != 'dev') {
   name: '${prefix}-monitoring-deployment'
   params: {
     location: location
@@ -87,11 +87,12 @@ module network 'modules/network.bicep' = {
     containerAppsSubnetPrefix: containerAppsSubnetPrefix
     containerAppsNsgId: nsg.outputs.containerAppsNsgId
     postgresNsgId: nsg.outputs.postgresNsgId
-    natGatewayId: natGateway.outputs.natGatewayId
+    natGatewayId: natGateway.?outputs.natGatewayId
   }
 }
 
-module postgresql 'modules/postgresql.bicep' = {
+// TODO: open these modules after implement applications
+module postgresql 'modules/postgresql.bicep' = if (environment != 'dev') {
   name: '${prefix}-postgresql-deployment'
   params: {
     location: location

@@ -536,7 +536,7 @@ PostgreSQL: スタンバイへフェイルオーバー
 ```
 環境:
 ├─ Development (dev)
-│  - リソースグループ: yamatatsu-lab-v1-dev-rg
+│  - リソースグループ: yamatatsu-lab
 │  - 最小構成（コスト最適化）
 │  - PostgreSQL: Burstable tier
 │  - Container Apps: Min 0, Max 3
@@ -552,7 +552,7 @@ PostgreSQL: スタンバイへフェイルオーバー
 
 ```
 ディレクトリ構造:
-infrastructure/
+
 ├── main.bicep
 ├── modules/
 │   ├── network.bicep
@@ -582,7 +582,7 @@ on:
     branches:
       - main
     paths:
-      - 'infrastructure/**'
+      - 'apps/iac/**'
   workflow_dispatch:
     inputs:
       environment:
@@ -610,8 +610,8 @@ jobs:
         with:
           scope: resourcegroup
           resourceGroupName: yamatatsu-lab-v1-${{ github.event.inputs.environment }}-rg
-          template: ./infrastructure/main.bicep
-          parameters: ./infrastructure/params/${{ github.event.inputs.environment }}.bicepparam
+          template: ./apps/iac/main.bicep
+          parameters: ./apps/iac/params/${{ github.event.inputs.environment }}.bicepparam
 ```
 
 #### アプリケーションデプロイ
@@ -641,7 +641,7 @@ jobs:
         run: |
           az containerapp update \
             --name yamatatsu-lab-v1-web \
-            --resource-group yamatatsu-lab-v1-prod-rg \
+            --resource-group yamatatsu-lab \
             --image myregistry.azurecr.io/app:${{ github.sha }}
 ```
 
@@ -668,12 +668,12 @@ Container Appsのリビジョン機能を使用:
 # 前のリビジョンに即座に切り替え
 az containerapp revision set-mode \
   --name yamatatsu-lab-v1-web \
-  --resource-group yamatatsu-lab-v1-prod-rg \
+  --resource-group yamatatsu-lab \
   --mode single
 
 az containerapp revision activate \
   --name yamatatsu-lab-v1--rev-previous \
-  --resource-group yamatatsu-lab-v1-prod-rg
+  --resource-group yamatatsu-lab
 ```
 
 ## 9. 運用・監視
@@ -863,35 +863,21 @@ Application Gateway WAF_v2:
 #### デプロイ
 ```bash
 # 開発環境
-az deployment group create \
-  --resource-group yamatatsu-lab-v1-dev-rg \
-  --template-file infrastructure/main.bicep \
-  --parameters infrastructure/params/dev.bicepparam
+az deployment group what-if --resource-group yamatatsu-lab --template-file main.bicep --parameters params/dev.bicepparam
+az deployment group create --resource-group yamatatsu-lab --template-file main.bicep --parameters params/dev.bicepparam
 
-# 本番環境（What-If確認後）
-az deployment group what-if \
-  --resource-group yamatatsu-lab-v1-prod-rg \
-  --template-file infrastructure/main.bicep \
-  --parameters infrastructure/params/prod.bicepparam
-
-az deployment group create \
-  --resource-group yamatatsu-lab-v1-prod-rg \
-  --template-file infrastructure/main.bicep \
-  --parameters infrastructure/params/prod.bicepparam
+# 本番環境
+az deployment group what-if --resource-group yamatatsu-lab --template-file main.bicep --parameters params/prod.bicepparam
+az deployment group create --resource-group yamatatsu-lab --template-file main.bicep --parameters params/prod.bicepparam
 ```
 
 #### ログ確認
 ```bash
 # Container Appsログ
-az containerapp logs show \
-  --name yamatatsu-lab-v1-web \
-  --resource-group yamatatsu-lab-v1-prod-rg \
-  --follow
+az containerapp logs show --name yamatatsu-lab-v1-web --resource-group yamatatsu-lab --follow
 
 # PostgreSQLログ（Log Analytics経由）
-az monitor log-analytics query \
-  --workspace {workspace-id} \
-  --analytics-query "AzureDiagnostics | where ResourceType == 'POSTGRESQL' | take 100"
+az monitor log-analytics query --workspace {workspace-id} --analytics-query "AzureDiagnostics | where ResourceType == 'POSTGRESQL' | take 100"
 ```
 
 ### 11.2 参考リソース

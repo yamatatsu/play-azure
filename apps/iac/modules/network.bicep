@@ -14,7 +14,7 @@ param containerAppsNsgId string
 param postgresNsgId string
 
 @description('NAT Gateway resource ID')
-param natGatewayId string
+param natGatewayId string = ''
 
 @description('VNet address prefix')
 param vnetAddressPrefix string = '10.0.0.0/16'
@@ -39,14 +39,11 @@ resource vnet 'Microsoft.Network/virtualNetworks@2024-10-01' = {
 resource containerAppsSubnet 'Microsoft.Network/virtualNetworks/subnets@2024-10-01' = {
   parent: vnet
   name: 'containerapps-subnet'
-  properties: {
+  properties: union({
     addressPrefix: containerAppsSubnetPrefix
     privateEndpointNetworkPolicies: 'Enabled'
     networkSecurityGroup: {
       id: containerAppsNsgId
-    }
-    natGateway: {
-      id: natGatewayId
     }
     delegations: [
       {
@@ -56,7 +53,11 @@ resource containerAppsSubnet 'Microsoft.Network/virtualNetworks/subnets@2024-10-
         }
       }
     ]
-  }
+  }, !empty(natGatewayId) ? {
+    natGateway: {
+      id: natGatewayId
+    }
+  } : {})
 }
 
 resource postgresSubnet 'Microsoft.Network/virtualNetworks/subnets@2024-10-01' = {
