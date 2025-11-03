@@ -1,0 +1,51 @@
+{
+	"name": "@apps/frontend",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "vite --clearScreen=false",
+		"build": "tsc -b && vite build",
+		"preview": "vite preview",
+		"check:type": "tsc -b --noEmit"
+	},
+	"dependencies": {
+		"@apps/backend": "*",
+		"@azure/msal-browser": "^4.24.1",
+		"@azure/msal-react": "^3.0.20",
+		"@radix-ui/react-dialog": "^1.1.15",
+		"@radix-ui/react-label": "^2.1.7",
+		"@radix-ui/react-radio-group": "^1.3.8",
+		"@radix-ui/react-select": "^2.2.6",
+		"@radix-ui/react-separator": "^1.1.7",
+		"@radix-ui/react-slot": "^1.2.3",
+		"@tailwindcss/vite": "^4.1.14",
+		"@tanstack/react-devtools": "^0.7.7",
+		"@tanstack/react-form": "^1.0.0",
+		"@tanstack/react-form-devtools": "^0.1.7",
+		"@tanstack/react-query": "5.89.0",
+		"@tanstack/react-router": "^1.132.47",
+		"@tanstack/react-table": "^8.21.3",
+		"@tanstack/router-plugin": "^1.132.51",
+		"class-variance-authority": "^0.7.1",
+		"clsx": "^2.1.1",
+		"dayjs": "^1.11.18",
+		"hono": "^4.9.8",
+		"lucide-react": "^0.545.0",
+		"react": "19.1.1",
+		"react-dom": "19.1.1",
+		"react-error-boundary": "^6.0.0",
+		"tailwind-merge": "^3.3.1",
+		"tailwindcss": "^4.1.14",
+		"zod": "^4.1.12"
+	},
+	"devDependencies": {
+		"@types/react": "19.1.10",
+		"@types/react-dom": "19.1.7",
+		"@vitejs/plugin-react": "5.0.0",
+		"shadcn": "^3.4.0",
+		"tw-animate-css": "^1.4.0",
+		"typescript": "5.9.2",
+		"vite": "7.1.7"
+	}
+}

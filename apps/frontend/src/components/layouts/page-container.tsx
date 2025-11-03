@@ -1,0 +1,11 @@
+/**
+ * 一定幅以上の画面ではコンテナの幅を一定にし、
+ * 画面幅が一定幅未満の場合はコンテナの幅を画面幅に合わせる
+ */
+export default function PageContainer({
+	children,
+}: {
+	children: React.ReactNode;
+}) {
+	return <div className="container mx-auto p-6 max-w-4xl">{children}</div>;
+}
