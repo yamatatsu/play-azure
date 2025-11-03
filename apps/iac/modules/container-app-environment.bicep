@@ -50,6 +50,13 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2025-01-01' 
       }
     }
     daprAIConnectionString: appInsightsConnectionString
+    // Workload Profiles (V2) - 推奨方式
+    workloadProfiles: [
+      {
+        name: 'Consumption'
+        workloadProfileType: 'Consumption'
+      }
+    ]
   }
 }
 
