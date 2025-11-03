@@ -2,3 +2,6 @@
 .devcontainer/setup.personal.sh
 node_modules
 .claude/settings.local.json
+
+# Bicep build artifacts (ARM Templates generated from .bicep files)
+apps/iac/**/*.json

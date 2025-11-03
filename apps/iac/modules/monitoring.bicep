@@ -84,5 +84,11 @@ output logAnalyticsWorkspaceName string = logAnalytics.name
 output logAnalyticsCustomerId string = logAnalytics.properties.customerId
 output applicationInsightsId string = applicationInsights.id
 output applicationInsightsName string = applicationInsights.name
+
+@description('Application Insights Connection String (secure)')
+@secure()
 output applicationInsightsConnectionString string = applicationInsights.properties.ConnectionString
+
+@description('Application Insights Instrumentation Key (secure)')
+@secure()
 output applicationInsightsInstrumentationKey string = applicationInsights.properties.InstrumentationKey

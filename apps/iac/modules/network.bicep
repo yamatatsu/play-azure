@@ -45,14 +45,7 @@ resource containerAppsSubnet 'Microsoft.Network/virtualNetworks/subnets@2024-10-
     networkSecurityGroup: {
       id: containerAppsNsgId
     }
-    delegations: [
-      {
-        name: 'Microsoft.App.environments'
-        properties: {
-          serviceName: 'Microsoft.App/environments'
-        }
-      }
-    ]
+    // Container Apps Environment作成時に自動的に委任されるため、ここでは設定しない
   }, !empty(natGatewayId) ? {
     natGateway: {
       id: natGatewayId
