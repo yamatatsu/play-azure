@@ -29,6 +29,9 @@ param containerAppEnvironmentId string
 @description('Container Registry login server (e.g., registry.azurecr.io)')
 param containerRegistryLoginServer string
 
+@description('User Assigned Managed Identity ID')
+param identityId string
+
 @description('Container image name with tag (e.g., backend:latest)')
 param containerImage string
 
@@ -43,7 +46,10 @@ resource containerApp 'Microsoft.App/containerApps@2025-01-01' = {
   location: location
   tags: tags
   identity: {
-    type: 'SystemAssigned'
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${identityId}': {}
+    }
   }
   properties: {
     managedEnvironmentId: containerAppEnvironmentId
@@ -56,7 +62,7 @@ resource containerApp 'Microsoft.App/containerApps@2025-01-01' = {
         allowInsecure: false
         traffic: [{ latestRevision: true, weight: 100 }]
       }
-      registries: [{ identity: 'system', server: containerRegistryLoginServer }]
+      registries: [{ identity: identityId, server: containerRegistryLoginServer }]
     }
     template: {
       containers: [
@@ -69,8 +75,8 @@ resource containerApp 'Microsoft.App/containerApps@2025-01-01' = {
           }
           env: environmentVariables
           probes: [
-            { type: 'Liveness',  httpGet: { path: '/', port: 3000, scheme: 'HTTP' }, initialDelaySeconds: 10, periodSeconds: 10, timeoutSeconds: 5, failureThreshold: 3 }
-            { type: 'Readiness', httpGet: { path: '/', port: 3000, scheme: 'HTTP' }, initialDelaySeconds: 5,  periodSeconds: 5,  timeoutSeconds: 3, failureThreshold: 3 }
+            { type: 'Liveness',  httpGet: { path: '/', port: 3000, scheme: 'HTTP' }, initialDelaySeconds: 30, periodSeconds: 10, timeoutSeconds: 5, failureThreshold: 3 }
+            { type: 'Readiness', httpGet: { path: '/', port: 3000, scheme: 'HTTP' }, initialDelaySeconds: 15, periodSeconds: 5,  timeoutSeconds: 3, failureThreshold: 3 }
           ]
         }
       ]
@@ -99,6 +105,3 @@ output fqdn string = containerApp.properties.configuration.ingress.fqdn
 
 @description('Container App latest revision name')
 output latestRevisionName string = containerApp.properties.latestRevisionName
-
-@description('Container App principal ID (Managed Identity)')
-output principalId string = containerApp.identity.principalId

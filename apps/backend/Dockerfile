@@ -6,9 +6,17 @@ ARG BUN_VERSION=1.3.0
 FROM oven/bun:${BUN_VERSION}-debian AS builder
 WORKDIR /app
 
-COPY . .
+COPY bun.lock ./
+COPY package.json ./
+COPY packages/db/package.json ./packages/db/
+COPY packages/logger/package.json ./packages/logger/
+COPY apps/backend/package.json ./apps/backend/
+COPY apps/frontend/package.json ./apps/frontend/
+COPY apps/iac/package.json ./apps/iac/
 
 RUN bun install --frozen-lockfile
+
+COPY . .
 
 RUN bun build ./apps/backend/src/index.ts \
     --outfile ./server.js \

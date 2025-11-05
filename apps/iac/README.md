@@ -105,7 +105,7 @@ az acr login --name $ACR_NAME
 
 # イメージのビルド（リポジトリルートから実行）
 cd /workspace/main
-docker build -f apps/backend/Dockerfile -t $ACR_NAME.azurecr.io/backend:latest .
+docker build --platform linux/amd64 -f apps/backend/Dockerfile -t $ACR_NAME.azurecr.io/backend:latest .
 
 # イメージのプッシュ
 docker push $ACR_NAME.azurecr.io/backend:latest

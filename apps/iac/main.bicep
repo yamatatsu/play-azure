@@ -157,13 +157,34 @@ module postgresql 'modules/postgresql.bicep' = if (environment != 'dev') {
 // Azure Container Registry
 // Dockerイメージを保管
 // - SKU: Standard
-// - Admin User有効 (開発時の利便性のため)
 module containerRegistry 'modules/container-registry.bicep' = {
   name: '${prefix}-acr-deployment'
   params: {
     location: location
     prefix: prefix
     tags: tags
+  }
+}
+
+// User Assigned Managed Identity
+// Container AppがACRからイメージをpullするために使用
+// User Assigned Identityを使用することで、1回のデプロイで完結する
+module managedIdentity 'modules/managed-identity.bicep' = {
+  name: '${prefix}-identity-deployment'
+  params: {
+    location: location
+    prefix: prefix
+    tags: tags
+  }
+}
+
+// Managed IdentityにACR Pullロールを付与
+// この設定により、Container AppがACRからセキュアにイメージをpullできる
+module acrRoleAssignment 'modules/acr-role-assignment.bicep' = {
+  name: '${prefix}-acr-role-assignment'
+  params: {
+    acrName: containerRegistry.outputs.containerRegistryName
+    principalId: managedIdentity.outputs.principalId
   }
 }
 
@@ -190,7 +211,7 @@ module containerAppEnvironment 'modules/container-app-environment.bicep' = {
 // - ポート: 3000
 // - スケール: 0-10レプリカ (HTTP同時リクエスト数ベース)
 // - リソース: 0.5 vCPU, 1Gi メモリ
-// - Managed Identity有効 (ACRからイメージをpull)
+// - User Assigned Managed Identity使用（セキュリティベストプラクティス）
 module webServerApp 'modules/container-app-web.bicep' = {
   name: '${prefix}-web-deployment'
   params: {
@@ -199,21 +220,13 @@ module webServerApp 'modules/container-app-web.bicep' = {
     tags: tags
     containerAppEnvironmentId: containerAppEnvironment.outputs.containerAppEnvironmentId
     containerRegistryLoginServer: containerRegistry.outputs.loginServer
+    identityId: managedIdentity.outputs.identityId
     containerImage: 'backend:latest'
     environmentVariables: []
   }
-}
-
-// Container AppのManaged IdentityにACR Pullロールを付与
-// これにより、Container AppがACRからイメージをpullできる
-resource acrPullRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(resourceGroup().id, '${prefix}-web', 'acrpull')
-  scope: resourceGroup()
-  properties: {
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d') // AcrPull
-    principalId: webServerApp.outputs.principalId
-    principalType: 'ServicePrincipal'
-  }
+  dependsOn: [
+    acrRoleAssignment // ロール割り当てが完了してからContainer Appを作成
+  ]
 }
 
 // ===========================================================================

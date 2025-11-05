@@ -6,7 +6,7 @@
 //
 // 仕様:
 // - SKU: Standard (本番環境ではPremiumも検討可能)
-// - Admin User: 有効 (開発時の利便性のため、本番ではManaged Identity推奨)
+// - Admin User: 無効 (Managed Identityを使用)
 // - パブリックアクセス: 有効
 // - ゾーン冗長: 無効 (Premium SKUでのみ利用可能)
 //
@@ -35,7 +35,7 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2025-04-01' =
     name: 'Standard'
   }
   properties: {
-    adminUserEnabled: true
+    adminUserEnabled: false
     publicNetworkAccess: 'Enabled'
     networkRuleBypassOptions: 'AzureServices'
     zoneRedundancy: 'Disabled'
